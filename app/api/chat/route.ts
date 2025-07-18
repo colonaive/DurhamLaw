@@ -21,17 +21,26 @@ ${context ? `Context: ${context}` : ''}`;
       messages: messages,
     });
 
-    // ✅ Filter only TextBlock entries and join their .text
+    console.log("Claude raw response:", JSON.stringify(response, null, 2));
+
     const content = response.content
-      .filter((block) => block.type === 'text')
+      ?.filter((block) => block.type === 'text')
       .map((block) => (block as { text: string }).text)
       .join('\n\n');
 
+    if (!content) {
+      console.error('Claude returned no usable text.');
+      return NextResponse.json(
+        { error: 'No content received from Claude.' },
+        { status: 500 }
+      );
+    }
+
     return NextResponse.json({ content });
-  } catch (error) {
-    console.error('Chat API Error:', error);
+  } catch (error: any) {
+    console.error('Chat API Error:', error?.message || error);
     return NextResponse.json(
-      { error: 'Failed to process request' },
+      { error: error?.message || 'Failed to process request' },
       { status: 500 }
     );
   }
