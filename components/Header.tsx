@@ -15,10 +15,10 @@ export default function Header() {
     setMounted(true)
     
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (user) {
-        setUserEmail(user.email)
-      }
+      const { data: { user } } = await supabase.auth.getUser();
+if (user?.email) {
+  setUserEmail(user.email);
+}
     }
     
     if (mounted) {
