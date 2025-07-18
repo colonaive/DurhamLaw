@@ -20,7 +20,7 @@ export default function Dashboard() {
       if (!session) {
         router.push('/login')
       } else {
-        setUserEmail(session.user.email)
+       setUserEmail(session.user.email ?? null)
         setLoading(false)
       }
     }
