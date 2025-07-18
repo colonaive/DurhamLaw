@@ -37,11 +37,12 @@ ${context ? `Context: ${context}` : ''}`;
     }
 
     return NextResponse.json({ content });
-  } catch (error: any) {
-    console.error('Chat API Error:', error?.message || error);
-    return NextResponse.json(
-      { error: error?.message || 'Failed to process request' },
-      { status: 500 }
-    );
-  }
+ } catch (error: any) {
+  console.error('Chat API Error:', error?.response?.data || error.message || error);
+  return NextResponse.json(
+    { error: 'Failed to process request', details: error?.message || 'Unknown error' },
+    { status: 500 }
+  );
+}
+
 }
